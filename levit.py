@@ -35,35 +35,35 @@ __all__ = [specification.keys()]
 
 @register_model
 def LeViT_128S(num_classes=1000, distillation=True,
-               pretrained=False, fuse=False):
+               pretrained=False, pretrained_cfg=None, fuse=False):
     return model_factory(**specification['LeViT_128S'], num_classes=num_classes,
                          distillation=distillation, pretrained=pretrained, fuse=fuse)
 
 
 @register_model
 def LeViT_128(num_classes=1000, distillation=True,
-              pretrained=False, fuse=False):
+              pretrained=False, pretrained_cfg=None, fuse=False):
     return model_factory(**specification['LeViT_128'], num_classes=num_classes,
                          distillation=distillation, pretrained=pretrained, fuse=fuse)
 
 
 @register_model
 def LeViT_192(num_classes=1000, distillation=True,
-              pretrained=False, fuse=False):
+              pretrained=False, pretrained_cfg=None, fuse=False):
     return model_factory(**specification['LeViT_192'], num_classes=num_classes,
                          distillation=distillation, pretrained=pretrained, fuse=fuse)
 
 
 @register_model
 def LeViT_256(num_classes=1000, distillation=True,
-              pretrained=False, fuse=False):
+              pretrained=False, pretrained_cfg=None, fuse=False):
     return model_factory(**specification['LeViT_256'], num_classes=num_classes,
                          distillation=distillation, pretrained=pretrained, fuse=fuse)
 
 
 @register_model
 def LeViT_384(num_classes=1000, distillation=True,
-              pretrained=False, fuse=False):
+              pretrained=False, pretrained_cfg=None, fuse=False):
     return model_factory(**specification['LeViT_384'], num_classes=num_classes,
                          distillation=distillation, pretrained=pretrained, fuse=fuse)
 
@@ -94,7 +94,7 @@ class Conv2d_BN(torch.nn.Sequential):
         w = c.weight * w[:, None, None, None]
         b = bn.bias - bn.running_mean * bn.weight / \
             (bn.running_var + bn.eps)**0.5
-        m = torch.nn.Conv2d(w.size(1), w.size(
+        m = torch.nn.Conv2d(w.size(1) * self.c.groups, w.size(
             0), w.shape[2:], stride=self.c.stride, padding=self.c.padding, dilation=self.c.dilation, groups=self.c.groups)
         m.weight.data.copy_(w)
         m.bias.data.copy_(b)
